@@ -11,7 +11,7 @@ class JugadorRemoteDataSource @Inject constructor(
 ) {
     suspend fun getJugadores(): Result<List<JugadorResponseDto>> {
         return try {
-            val JugadorResponseDto = api.getJugador()
+            val JugadorResponseDto = api.getJugadores()
             if (!JugadorResponseDto.isSuccessful)
                 Result.failure(Exception("Error de red ${JugadorResponseDto.code()}"))
             else
@@ -23,7 +23,7 @@ class JugadorRemoteDataSource @Inject constructor(
         }
     }
 
-    suspend fun getJugador(id: Int): Result<JugadorResponse> {
+    suspend fun getJugador(id: Int): Result<JugadorResponseDto> {
         return try {
             val response = api.getJugador(id)
             if (!response.isSuccessful)
@@ -37,7 +37,7 @@ class JugadorRemoteDataSource @Inject constructor(
         }
     }
 
-    suspend fun createJugador(jugador: JugadorRequest): Result<JugadorResponse> {
+    suspend fun createJugador(jugador: JugadorRequest): Result<JugadorResponseDto> {
         return try {
             val response = api.createJugador(jugador)
             if (!response.isSuccessful)
@@ -51,7 +51,7 @@ class JugadorRemoteDataSource @Inject constructor(
         }
     }
 
-    suspend fun updateJugador(id: Int, jugador: JugadorRequest): Result<JugadorResponse> {
+    suspend fun updateJugador(id: Int, jugador: JugadorRequest): Result<JugadorResponseDto> {
         return try {
             val response = api.updateJugador(id, jugador)
             if (!response.isSuccessful)
