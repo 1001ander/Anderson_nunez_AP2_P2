@@ -7,5 +7,5 @@ sealed class Screen {
     data object List : Screen()
 
     @Serializable
-    data object Detail : Screen()
+    data class Detail(val id: Int = 0) : Screen()
 }
