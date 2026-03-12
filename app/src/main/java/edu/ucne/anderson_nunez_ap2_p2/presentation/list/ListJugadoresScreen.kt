@@ -8,12 +8,15 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import edu.ucne.anderson_nunez_ap2_p2.domain.model.Jugador
 
@@ -25,6 +28,16 @@ fun ListScreen(
     onNavigateToEdit: (Int) -> Unit = {}
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val lifecycleState by lifecycleOwner.lifecycle.currentStateFlow.collectAsStateWithLifecycle()
+
+    LaunchedEffect(lifecycleState) {
+        if (lifecycleState == Lifecycle.State.RESUMED) {
+            viewModel.onEvent(ListJugadoresEvent.GetJugadores)
+        }
+    }
+
     ListBodyScreen(
         state = state,
         onNavigateToCreate = onNavigateToCreate,
@@ -71,7 +84,6 @@ fun ListBodyScreen(
                     )
                 }
             }
-
 
             Text(
                 text = "Total jugadores: ${state.jugadores.size}",
